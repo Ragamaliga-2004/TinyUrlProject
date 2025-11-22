@@ -1,0 +1,330 @@
+// src/styles/_layout.scss
+@use 'variables' as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  background-color: $color-bg;
+  color: $color-text;
+}
+
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-header {
+  background-color: $color-surface;
+  border-bottom: 1px solid $color-border;
+  padding: $spacing-md $spacing-xl;
+  box-shadow: $shadow-soft;
+}
+
+.app-header__title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.app-main {
+  flex: 1;
+  padding: $spacing-xl;
+  display: flex;
+  justify-content: center;
+}
+
+.app-container {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.card {
+  background-color: $color-surface;
+  border: 1px solid $color-border;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-soft;
+}
+
+.page-title {
+  margin-bottom: $spacing-lg;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+button {
+  font-family: inherit;
+}
+.dashboard-page,
+.stats-page {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+button {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-md;
+  border: 1px solid $color-primary;
+  background-color: $color-primary;
+  color: #ffffff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background-color: $color-primary-hover;
+    border-color: $color-primary-hover;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.form-group {
+  margin-bottom: $spacing-md;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.field-label {
+  font-weight: 500;
+  font-size: 0.9rem;
+
+  &__required {
+    color: $color-danger;
+  }
+}
+
+.field-input {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-md;
+  border: 1px solid $color-border;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+  }
+
+  &:disabled {
+    background-color: #e5e7eb;
+  }
+}
+
+.field-help {
+  margin: 0;
+  font-size: 0.8rem;
+  color: $color-text-muted;
+}
+
+.form-error {
+  margin: 0 0 $spacing-sm 0;
+  font-size: 0.85rem;
+  color: $color-danger;
+}
+
+.links-table-wrapper {
+  margin-top: $spacing-sm;
+}
+
+.links-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.links-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+
+  th,
+  td {
+    padding: $spacing-sm $spacing-md;
+    border-bottom: 1px solid $color-border;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  thead th {
+    background-color: #f3f4f6;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  tbody tr:nth-child(even) {
+    background-color: #f9fafb;
+  }
+
+  tbody tr:hover {
+    background-color: #eef2ff;
+  }
+
+  code {
+    font-size: 0.85rem;
+    background-color: #e5e7eb;
+    padding: 0.1rem 0.3rem;
+    border-radius: $radius-sm;
+  }
+}
+
+.links-table__target {
+  max-width: 320px;
+
+  span {
+    display: inline-block;
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.links-table__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-xs;
+}
+
+/* Button variants */
+
+.btn-secondary {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-md;
+  border: 1px solid $color-border;
+  background-color: #f9fafb;
+  color: $color-text;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background-color: #e5e7eb;
+    border-color: #d1d5db;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.btn-danger {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-md;
+  border: 1px solid $color-danger;
+  background-color: $color-danger;
+  color: #ffffff;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background-color: #b91c1c;
+    border-color: #b91c1c;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.stats-card {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-lg;
+}
+
+.stats-section {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.stats-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.stats-shorturl {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.stats-shorturl__code {
+  display: inline-block;
+  padding: 0.1rem 0.35rem;
+  border-radius: $radius-md;
+  background-color: #e5e7eb;
+  font-size: 0.9rem;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: $spacing-md;
+}
+
+.stats-item {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.stats-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: $color-text-muted;
+}
+
+.stats-value {
+  font-size: 0.95rem;
+}
+
+.stats-url a {
+  color: $color-primary;
+  text-decoration: none;
+  word-break: break-all;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.stats-footer {
+  display: flex;
+  justify-content: flex-end;
+}
