@@ -1,251 +1,227 @@
-TinyLink – URL Shortener (Node.js + Express + PostgreSQL + React + Vite + Sass)
-TinyLink is a lightweight URL shortener web application built with:
-    • Backend: Node.js, Express, PostgreSQL (Railway)
-    • Frontend: React, Vite, Sass (SCSS)
-    • Hosting: Ready for deployment to Railway + Vercel
-It includes:
-    • Short URL generation
-    • Click tracking
-    • Stats dashboard
-    • CRUD operations
-    • Redirect service
-This README describes project setup, environment variables, API endpoints, UI behavior, and deployment workflow.
+# 🔗 TinyLink – URL Shortener (Node.js + Express + PostgreSQL + React + Vite + Sass)
 
-🧱 Project Architecture
+TinyLink is a lightweight URL shortener web application built with a modern, decoupled stack.
 
-tinylink/
+**Key Features:**
+
+* **Short URL generation** and **Redirect service** (`GET /:code`)
+* **Click tracking** and **Stats dashboard**
+* **Full CRUD** operations via a RESTful API
+* **Optional custom short codes**
+
+## 🧱 Project Architecture
+
+The project is structured as a monorepo with separate directories for the frontend and backend, enabling independent development and deployment.
+
+
+```
+├── tinylink-backend/ 
+│   ├── .env                       // Environment variables for Node/DB connection
+│   ├── package.json               // Backend dependencies and scripts
+│   ├── README.md
+│   └── src/
+│       ├── db.js                  // PostgreSQL connection pool setup
+│       ├── index.js               // Main Express server file, entry point
+│       └── routes/
+│           ├── links.js           // Routes for CRUD operations on links (/api/links)
+│           └── redirect.js        // Route handler for redirection and click tracking (/:code)
 │
-
-├── tinylink-backend/     → Express API + Redirect Service
-
-│   ├── src/
-
-│   │    ├── index.js
-
-│   │    ├── db.js
-
-│   │    ├── routes/
-
-│   │         ├── links.js
-
-│   │         └── redirect.js
-
-│   ├── package.json
-
-│   └── README.md
-
+├── tinylink-frontend/
+│   ├── .env                       // Environment variables for VITE/API URL
+│   ├── package.json               // Frontend dependencies (React, Vite)
+│   ├── README.md
+│   └── src/
+│       ├── api.js                 // Functions for interacting with the backend API
+│       ├── App.jsx                // Root React component and routing
+│       ├── components/            // Reusable UI components (e.g., table rows, forms)
+│       ├── pages/                 // Main views (e.g., Dashboard, StatsPage)
+│       └── styles/                // Sass/SCSS files for styling
 │
+└── README.md                      // This file
 
-├── tinylink-frontend/    → React + Vite + Sass UI
-
-│   ├── src/
-
-│   │    ├── components/
-
-│   │    ├── pages/
-
-│   │    ├── styles/
-
-│   │    ├── App.jsx
-
-│   │    └── api.js
-
-│   ├── package.json
-
-│   └── README.md
-
-│
-
-└── README.md (this file)
+```
 
 
-🚀 Features
-Backend
-    • Create new short URLs
-    • Optional custom short code ([A-Za-z0-9]{6,8})
-    • Redirect handler (GET /:code)
-    • Click tracking (total_clicks, last_clicked_at)
-    • RESTful CRUD endpoints
-    • PostgreSQL connection pooling
-    • Complete error handling
-    • Environment-variable-based configuration
-Frontend
-    • Dashboard with:
-        ○ Form to create links
-        ○ Full links table (Copy, Stats, Delete)
-    • Stats page:
-        ○ View short URL
-        ○ Copy button
-        ○ Click statistics
-    • Clean UI using SCSS
-    • API integration with backend
-    • Short URL base configurable via VITE_SHORT_BASE_URL
+---
 
-⚙️ Tech Stack
-Backend
-    • Node.js
-    • Express
-    • PostgreSQL
-    • pg (Pool)
-    • dotenv
-    • CORS
-Frontend
-    • React (Vite)
-    • react-router-dom@6
-    • Sass (SCSS)
-    • Fetch API integration
+## ⚙️ Tech Stack
 
-🔧 Environment Variables
-Backend (tinylink-backend/.env)
+### Backend (Node.js/Express)
+* **Node.js**
+* **Express**
+* **PostgreSQL** (Hosted on **Railway**)
+* `pg` (Pool for efficient database connections)
+* `dotenv` (Configuration)
+* `CORS` (Cross-Origin Resource Sharing)
 
-PORT= localhost portNumber
-NODE_ENV=development
-DATABASE_URL=railway postgres db url 
+### Frontend (React/Vite)
+* **React** (Scaffolded with **Vite**)
+* `react-router-dom@6`
+* **Sass (SCSS)** for clean, modular styling
+* Fetch API integration
 
-Frontend (tinylink-frontend/.env)
+---
 
-VITE_API_BASE_URL=http://localhost:3000
-VITE_SHORT_BASE_URL=http://localhost:3000
-When deploying:
+## 🚀 Features
 
-VITE_API_BASE_URL=https://your-railway-backend.app
-VITE_SHORT_BASE_URL=https://your-railway-backend.app
+### Backend Capabilities
+* Create new short URLs with automatic or **optional custom short codes** (matches `[A-Za-z0-9]{6,8}`).
+* Dedicated **Redirect Handler** (`GET /:code`).
+* **Click tracking** (`total_clicks`, `last_clicked_at`).
+* **RESTful CRUD** endpoints for link management.
+* Complete error handling (e.g., 400 Bad Request, 409 Conflict).
 
-🛠️ Backend API Documentation
-Health Check
+### Frontend UI Features
+* **Dashboard** with:
+    * Form to create new links.
+    * Full links table (displaying Code, Short URL, Target URL, Clicks, Last Clicked).
+    * Actions: **Copy**, **Stats**, **Delete**.
+* **Stats Page** for a single link, showing detailed click statistics and timestamps.
+* Clean, responsive UI styled with **SCSS**.
+* Short URL base configurable via `VITE_SHORT_BASE_URL`.
 
-GET /healthz
-Create Link
+---
 
-POST /api/links
-{
-  "targetUrl": "https://example.com",
-  "customCode": "MyLink1"  // optional
-}
-Validations:
-    • targetUrl must be http or https
-    • customCode must match [A-Za-z0-9]{6,8}
-Responses:
-    • 201 Created
-    • 400 Bad Request
-    • 409 Conflict
+## 🔧 Environment Variables
 
-List All Links
+### Backend (`tinylink-backend/.env`)
 
-GET /api/links
+| Variable | Description | Local Example |
+| :--- | :--- | :--- |
+| **`PORT`** | Localhost port for the Express server. | `PORT=3000` |
+| **`NODE_ENV`** | Application environment. | `NODE_ENV=development` |
+| **`DATABASE_URL`** | Connection string for the Railway PostgreSQL DB. | `DATABASE_URL=postgres://user:pass@host:port/db` |
 
-Get Stats for One Link
+### Frontend (`tinylink-frontend/.env`)
 
-GET /api/links/:code
-    • Returns metadata: clicks, timestamps, URLs
-    • 404 when not found
+| Variable | Description | Local Example | Deployment Example |
+| :--- | :--- | :--- | :--- |
+| **`VITE_API_BASE_URL`** | The URL of the deployed Express API. | `VITE_API_BASE_URL=http://localhost:3000` | `https://your-railway-backend.app` |
+| **`VITE_SHORT_BASE_URL`** | The base URL used to construct the final short link. | `VITE_SHORT_BASE_URL=http://localhost:3000` | `https://your-railway-backend.app` |
 
-Delete Link
+---
 
-DELETE /api/links/:code
-Returns:
-    • 204 No Content
-    • 404 Not Found
+## 🛠️ Backend API Documentation
 
-Redirect Handler
+### Health Check
+* `GET /healthz`
 
-GET /:code
-Behavior:
-    • Validates code (6–8 alphanumeric)
-    • Looks up target URL
-    • Increments click count
-    • Sets last_clicked_at
-    • Redirects using 302
+### Create Link
+* `POST /api/links`
 
-🎨 Frontend UI Features
-Dashboard
-    • Create short URLs
-    • Custom code support
-    • Input validation
-    • Friendly error messages (400, 409)
-    • Table of all links with:
-        ○ Code
-        ○ Short URL (Copy)
-        ○ Target URL (truncated)
-        ○ Total clicks
-        ○ Last clicked
-        ○ Actions (Copy/Stats/Delete)
-    • Auto-refresh after create or delete
-Stats Page
-    • Displays:
-        ○ Short URL + Copy
-        ○ Target URL
-        ○ Total clicks
-        ○ Last clicked timestamp
-        ○ Created timestamp
-    • Error states:
-        ○ Loading
-        ○ 404 Not Found
-        ○ General network error
+| Parameter | Type | Description | Example |
+| :--- | :--- | :--- | :--- |
+| `targetUrl` | String | The full URL to shorten. | `"https://example.com"` |
+| `customCode` | String | **(Optional)** A custom code for the short link. | `"MyLink1"` |
 
-🧪 Running Locally
-Backend
+**Validations:**
+* `targetUrl` must be `http` or `https`.
+* `customCode` must match `[A-Za-z0-9]{6,8}`.
 
-cd tinylink-backend
-npm install
-npm run dev
-Runs at:
+**Responses:** `201 Created`, `400 Bad Request`, `409 Conflict` (Code already exists).
 
-http://localhost:3000
+### List All Links
+* `GET /api/links`
 
-Frontend
+### Get Stats for One Link
+* `GET /api/links/:code`
+    * Returns metadata (clicks, timestamps, URLs).
+    * **404** when not found.
 
-cd tinylink-frontend
-npm install
-npm run dev
-Runs at:
+### Delete Link
+* `DELETE /api/links/:code`
+    * Returns: `204 No Content`, `404 Not Found`.
 
-http://localhost:5173
+### Redirect Handler
+* `GET /:code`
+    * **Behavior:** Validates code, looks up `target_url`, **increments `total_clicks`**, sets `last_clicked_at`, and redirects using **302 Found**.
 
-🌐 Deployment Guide
-Deploy Backend (Railway)
-    1. Push repository to GitHub
-    2. Create a Railway project → Deploy from GitHub
-    3. Add PostgreSQL add-on
-    4. Railway auto-injects PG variables
-    5. Set:
+---
 
-PORT = 3000
-    6. Deploy → receive backend URL:
+## 🧪 Running Locally
 
-https://tinylink-api.up.railway.app
+### Backend Setup
 
-Deploy Frontend (Vercel or Netlify)
-For Vercel:
-Set environment variables:
+1.  Navigate to the backend directory:
+    ```bash
+    cd tinylink-backend
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Ensure your **PostgreSQL database** is running (e.g., start your local PG instance or configure your Railway connection).
+4.  Run the server:
+    ```bash
+    npm run dev
+    ```
+    The API runs at: `http://localhost:3000`
 
-VITE_API_BASE_URL=https://tinylink-api.up.railway.app
-VITE_SHORT_BASE_URL=https://tinylink-api.up.railway.app
-Then:
+### Frontend Setup
 
-npm run build
-Deploy the /dist folder.
+1.  Navigate to the frontend directory:
+    ```bash
+    cd tinylink-frontend
+    ```
+2.  Install dependencies:
+    ```bash
+    npm install
+    ```
+3.  Ensure your `tinylink-frontend/.env` variables point to the correct local backend URL (`http://localhost:3000`).
+4.  Run the development server:
+    ```bash
+    npm run dev
+    ```
+    The UI runs at: `http://localhost:5173`
 
-📈 Database Schema
-Your PostgreSQL links table:
+---
 
+## 🌐 Deployment Guide
+
+### Deploy Backend (Railway)
+
+1.  Push your entire repository to **GitHub**.
+2.  Create a new project on **Railway** and connect it to your GitHub repository.
+3.  Add the **PostgreSQL add-on** to your Railway project.
+4.  Railway will auto-inject the `DATABASE_URL` environment variable.
+5.  Manually set the `PORT` variable to `3000` for the backend service.
+6.  Upon deployment, you will receive the backend URL, e.g., `https://tinylink-api.up.railway.app`. This is your `API_BASE_URL`.
+
+### Deploy Frontend (Vercel or Netlify)
+
+1.  Connect your frontend repository (`tinylink-frontend`) to **Vercel** or **Netlify**.
+2.  During configuration, set the following environment variables (Vercel/Netlify):
+
+| Variable | Value |
+| :--- | :--- |
+| `VITE_API_BASE_URL` | `https://tinylink-api.up.railway.app` |
+| `VITE_SHORT_BASE_URL` | `https://tinylink-api.up.railway.app` |
+
+3.  The service will build the project (`npm run build`) and deploy the static assets from the `/dist` folder.
+
+---
+
+## 📈 Database Schema
+
+The `links` table in your PostgreSQL database is defined as follows:
+
+```sql
 CREATE TABLE links (
-  id SERIAL PRIMARY KEY,
-  code VARCHAR(8) UNIQUE NOT NULL,
-  target_url TEXT NOT NULL,
-  total_clicks INTEGER DEFAULT 0,
-  last_clicked_at TIMESTAMP,
-  created_at TIMESTAMP DEFAULT NOW(),
-  updated_at TIMESTAMP DEFAULT NOW()
+    id SERIAL PRIMARY KEY,
+    code VARCHAR(8) UNIQUE NOT NULL,
+    target_url TEXT NOT NULL,
+    total_clicks INTEGER DEFAULT 0,
+    last_clicked_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
 );
+🧰 Useful Database Commands
+SQL
 
-🧰 Useful Commands
-Drop table:
-
+-- Drop table (use with caution)
 DROP TABLE links;
-Recreate:
 
--- same CREATE statement as above
-
+-- Recreate table
+-- Same CREATE statement as shown above
 📄 License
-MIT License – free to use, modify, and deploy.
+This project is licensed under the MIT License. Feel free to use, modify, and deploy.
