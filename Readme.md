@@ -15,26 +15,47 @@ This README describes project setup, environment variables, API endpoints, UI be
 
 tinylink/
 │
+
 ├── tinylink-backend/     → Express API + Redirect Service
+
 │   ├── src/
+
 │   │    ├── index.js
+
 │   │    ├── db.js
+
 │   │    ├── routes/
+
 │   │         ├── links.js
+
 │   │         └── redirect.js
+
 │   ├── package.json
+
 │   └── README.md
+
 │
+
 ├── tinylink-frontend/    → React + Vite + Sass UI
+
 │   ├── src/
+
 │   │    ├── components/
+
 │   │    ├── pages/
+
 │   │    ├── styles/
+
 │   │    ├── App.jsx
+
 │   │    └── api.js
+
 │   ├── package.json
+
 │   └── README.md
+
 │
+
 └── README.md (this file)
 
 
